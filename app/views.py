@@ -112,9 +112,41 @@ def logout():
     logout_user()
     return redirect(url_for('base'))
 
+@app.route('/aboutcovid')
+@login_required
+def aboutcovid():
+    return render_template("aboutcovid.html", name=current_user.username)
+
+@app.route('/safe_practices')
+@login_required
+def safe_practices():
+    return render_template("safe_practices.html", name=current_user.username)
+
+@app.route('/symptoms')
+@login_required
+def symptoms():
+    return render_template("symptoms.html", name=current_user.username)
+
+@app.route('/whattodo')
+@login_required
+def whattodo():
+    return render_template("whattodo.html", name=current_user.username)
 
 
+@app.route('/assessment')
+@login_required
+def assessment():
+    return render_template("assessment.html", name=current_user.username)
 
 
+@app.route('/submission')
+@login_required
+def submission():
+    return render_template("submission.html", name=current_user.username)
+
+@app.route('/progress')
+@login_required
+def progress():
+    return render_template("progressreport.html", name=current_user.username)
 
 

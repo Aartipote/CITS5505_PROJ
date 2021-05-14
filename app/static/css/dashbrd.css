@@ -1,0 +1,18 @@
+* {
+    font-family:cursive;
+  }
+  a.nav-link {
+    font-family: cursive;
+    color:white;
+  }
+
+  body{
+    background-color:rgba(80, 24, 80, 0.067);
+  }
+
+  .user-page-container h1{
+    font-weight: bold;
+    color: rgb(33, 59, 204);
+    text-align: center;
+    margin-top:20px;
+  }

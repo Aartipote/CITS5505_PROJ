@@ -1,0 +1,28 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Hygiene Page{% endblock %}
+
+{% block main %}
+
+<div class="user-page-container">
+    <div class="bg-image-container-hygiene">
+        <h1>Learning Module - Safe Practices(Hygiene)</h1>
+        <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/8aTnmsDMldY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+        <div class="hygiene-video-container-1">
+            <!-- <iframe width="560" height="315" src="https://www.youtube.com/watch?v=REB-Mm_7nJU">
+            </iframe> -->
+            <h2><u>Steps to prevent spread of the virus:</u></h2>
+            <iframe width="800" height="515" src="https://www.youtube.com/embed/8c_UJwLq8PI" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="hygiene-video-container-2">
+            <h2><u>Precautions to take while going back to work:</u></h2>
+            <iframe width="800" height="515" src="https://www.youtube.com/embed/REB-Mm_7nJU" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="nextprev">
+            <a href="/aboutcovid" class="previous">&laquo; Previous</a>
+            <a href="/symptoms" class="next">Next &raquo;</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
