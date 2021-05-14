@@ -1,4 +1,5 @@
 {% extends "dashboard.html" %}
+{% import "bootstrap/wtf.html" as wtf %} 
 
 {% block title %}Assessment Page Page{% endblock %}
 
@@ -6,6 +7,39 @@
 
 <div class="user-page-container">
     <h1>Assessment</h1>
+    
+    <div class="container">
+        <form class="form-assessment" method="POST" action="/assessment">
+            <div class="ques-block">
+                <h2>Question 1:</h2>
+                <p>Vaccination can lead to an increase in mutation.</p>
+                <input type = "radio" name="question1" value = "Yes">  Yes <br>
+                <input type = "radio" name="question1"value = "No">  No<br>
+            </div>
+            <div class="ques-block">
+                <h2>Question 2:</h2>
+                <p>Covid-19 is a </p>
+                <input type = "radio" name="question2" value = "Fungus">  Fungus <br>
+                <input type = "radio" name="question2"value = "Virus">  Virus<br>
+                <input type = "radio" name="question2"value = "Bacteria">  Bacteria<br>
+            </div>
+            <div class="ques-block">
+                <h2>Question 3:</h2>
+                <p>Common cold is the same as Covid-19.</p>
+                <input type = "radio" name="question3" value = "True">  True<br>
+                <input type = "radio" name="question3"value = "False">  False<br>
+            </div>
+            <div class="ques-block">
+                <h2>Question 4:</h2>
+                <p>Which symptom do we see most likely when we are infected by COVID-19?</p>
+                <input type = "radio" name="question4" value = "Sore throat">  Sore throat<br>
+                <input type = "radio" name="question4"value = "Neck pain">  Neck pain<br>
+                <input type = "radio" name="question4"value = "Joint ache">  Joint ache<br>
+            </div>
+            <input type="submit">
+
+        </form>
+    </div>
 
     
 </div>
