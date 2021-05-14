@@ -1,3 +1,4 @@
+from flask.globals import request
 from app import app
 from flask import render_template, redirect, url_for, flash
 from flask_wtf import FlaskForm
@@ -19,6 +20,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(15), unique=True)
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(80))
+    answers = db.Column(db.String(100))
 
     # def __init__(self, username, email, password):
     #     self.id = id
@@ -30,16 +32,23 @@ class User(UserMixin, db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
+
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[InputRequired(), Length(min=4, max=15, message = "Username should be between 4 and 15 characters long")])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80, message = "Password should be a minimum of 8 characters")])
     remember = BooleanField('remember me')
 
 
+
 class RegisterForm(FlaskForm):
     email = StringField('email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
     username = StringField('username', validators=[InputRequired(), Length(min=4, max=15, message = "Username should be between 4 and 15 characters long")])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80, message = "Password should be a minimum of 8 characters")])
+
+
+class AssessmentForm(FlaskForm):
+    ques1 = StringField('Vaccination can lead to an increase in mutation.')
 
 @app.route("/")
 def base():
@@ -81,7 +90,7 @@ def signup():
         useremailcheck = User.query.filter_by(email = form.email.data).first()
         if not usernamecheck and not useremailcheck:
             hashed_password = generate_password_hash(form.password.data, method='sha256')
-            new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+            new_user = User(username=form.username.data, email=form.email.data, password=hashed_password, answers = "")
             db.session.add(new_user)
             db.session.commit()
 
@@ -133,15 +142,35 @@ def whattodo():
     return render_template("whattodo.html", name=current_user.username)
 
 
-@app.route('/assessment')
+@app.route('/assessment',methods=['GET','POST'])
 @login_required
 def assessment():
-    return render_template("assessment.html", name=current_user.username)
+    form = AssessmentForm()
+    actual_answers = ['No','Virus','False','Sore throat']
+    if request.method == 'POST':
+        user_answers = [request.form.get('question1'),request.form.get('question2'),request.form.get('question3'),request.form.get('question4')]
+        print(user_answers)
+        total = 0
+        for x in range(0,4):
+            if(user_answers[x]==actual_answers[x]):
+                total +=1
+        print(total)
+        sep = "/"
+        user_answer_concat = sep.join(user_answers)
+        print(user_answer_concat)
+        user_row = User.query.get(current_user.id)
+        user_row.answers=user_answer_concat
+        db.session.add(user_row)
+        db.session.commit()
+
+        return redirect(url_for('submission'))
+    return render_template("assessment.html" , name=current_user.username)
 
 
-@app.route('/submission')
+@app.route('/submission',methods=['GET'])
 @login_required
 def submission():
+
     return render_template("submission.html", name=current_user.username)
 
 @app.route('/progress')
