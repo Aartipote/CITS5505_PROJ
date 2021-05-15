@@ -48,7 +48,12 @@ class RegisterForm(FlaskForm):
 
 
 class AssessmentForm(FlaskForm):
-    ques1 = StringField('Vaccination can lead to an increase in mutation.')
+    ques1 = 'Vaccination can lead to an increase in mutation.'
+    ques2 = 'Common cold is the same as Covid-19.'
+    ques4 = 'Which symptom do we see most likely when we are infected by COVID-19?'
+    ques3 = 'Common cold is the same as Covid-19.'
+
+    questions = [ques1,ques2,ques3,ques4]
 
 @app.route("/")
 def base():
@@ -146,32 +151,55 @@ def whattodo():
 @login_required
 def assessment():
     form = AssessmentForm()
+    ques1 = 'Vaccination can lead to an increase in mutation.'
+    ques2 = 'Covid-19 is a'
+    ques3 = 'Common cold is the same as Covid-19.'
+    ques4 = 'Which symptom do we see most likely when we are infected by COVID-19?'
+    
+    questions = [ques1,ques2,ques3,ques4]
+
     actual_answers = ['No','Virus','False','Sore throat']
     if request.method == 'POST':
         user_answers = [request.form.get('question1'),request.form.get('question2'),request.form.get('question3'),request.form.get('question4')]
-        print(user_answers)
-        total = 0
-        for x in range(0,4):
-            if(user_answers[x]==actual_answers[x]):
-                total +=1
-        print(total)
         sep = "/"
         user_answer_concat = sep.join(user_answers)
-        print(user_answer_concat)
+
         user_row = User.query.get(current_user.id)
         user_row.answers=user_answer_concat
         db.session.add(user_row)
         db.session.commit()
 
         return redirect(url_for('submission'))
-    return render_template("assessment.html" , name=current_user.username)
+    return render_template("assessment.html" , name=current_user.username,questions=questions)
 
 
 @app.route('/submission',methods=['GET'])
 @login_required
 def submission():
+    form = AssessmentForm()
 
-    return render_template("submission.html", name=current_user.username)
+    ques1 = 'Vaccination can lead to an increase in mutation.'
+    ques2 = 'Covid-19 is a'
+    ques3 = 'Common cold is the same as Covid-19.'
+    ques4 = 'Which symptom do we see most likely when we are infected by COVID-19?'
+    
+
+    questions = [ques1,ques2,ques3,ques4]
+
+    user_row_subm = User.query.get(current_user.id)
+    ans_string = user_row_subm.answers
+    ans = ans_string.split('/')
+    actual_answers = ['No','Virus','False','Sore throat']
+    tot_value = 0
+    answer_correctness=[]
+    for x in range(len(actual_answers)):
+        if(ans[x]==actual_answers[x]):
+            tot_value +=1
+            answer_correctness.append('Correct')
+        else:
+            answer_correctness.append('In-correct')
+    
+    return render_template("submission.html",form = form, name=current_user.username,ans=answer_correctness, total = tot_value, questions=questions)
 
 @app.route('/progress')
 @login_required
