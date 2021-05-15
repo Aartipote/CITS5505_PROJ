@@ -22,17 +22,29 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(80))
     answers = db.Column(db.String(100))
 
+class Admin(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(15), unique=True)
+    password = db.Column(db.String(80))
+
     # def __init__(self, username, email, password):
     #     self.id = id
     #     self.username = username
     #     self.email = email
     #     self.password = password
 
+# admin1 = Admin(username="aarti", password="aarti123")
+# admin2 = Admin(username="reshma", password="reshma123")
+
+# db.session.add(admin1)
+# db.session.commit()
+
+# db.session.add(admin2)
+# db.session.commit()
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
-
 
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[InputRequired(), Length(min=4, max=15, message = "Username should be between 4 and 15 characters long")])
@@ -92,8 +104,38 @@ def login():
 @app.route("/admin_login", methods=['GET', 'POST'])
 def admin_login():
     form = LoginForm()
+
     if form.validate_on_submit():
-        return "<h1>" + form.username.data + "<h1>" + form.password.data
+        admin = Admin.query.filter_by(username=form.username.data).first()
+        if admin:
+            if admin.password == form.password.data:
+                login_user(admin, remember=form.remember.data)
+                # return redirect(url_for('admin_dashboard'))
+                return render_template("admin_dashboard.html")
+            else:
+                flash('Invalid password')
+                return redirect(url_for('admin_login'))
+        # else:
+        #     admin1 = Admin(username="aarti", password="aarti123")
+        #     admin2 = Admin(username="reshma", password="reshma123")
+             
+        #     db.session.add(admin1)
+        #     db.session.commit()
+
+        #     db.session.add(admin2)
+        #     db.session.commit()
+        #     return redirect(url_for('admin_login')) 
+
+        else:
+            flash("Admin account doesnt exist")
+            return redirect(url_for("admin_login"))
+    else:
+        if(len(list(form.errors.values())) >0):
+            flash(list(form.errors.values())[0][0])
+            return redirect(url_for('admin_login'))
+
+        
+        # return "<h1>" + form.username.data + "<h1>" + form.password.data
 
     return render_template("admin_login.html", form=form)    
 
@@ -126,10 +168,16 @@ def signup():
     
     return render_template("signup.html", form=form)
 
+
 @app.route("/dashboard")
 @login_required
 def dashboard():
     return render_template('dashboard.html', name=current_user.username)
+
+@app.route("/admin_dashboard")
+@login_required
+def admin_dashboard():
+    return render_template('admin_dashboard.html', name=current_user.username)
 
 @app.route('/logout')
 @login_required
