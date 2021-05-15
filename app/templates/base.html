@@ -33,12 +33,11 @@
     </head>
  
     <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Covid Page</a>
 
-
-            </ul>
             <ul class="navbar-nav mb-3 mb-lg-0 ml-auto">
                 <li class="nav-item">
                     <a class="nav-link " href="/login">Login</a>
@@ -49,9 +48,37 @@
 
             </ul>
         </div>
-        </div>
-    </nav>
-    </nav>
+ 
+    </nav>  -->
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="/">Covid Page</a>
+
+          <ul class="navbar-nav mb-3 mb-lg-0 ml-auto">
+            <div class="dropdown show">
+              <li class="nav-item">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Login
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <a class="dropdown-item" href="/login">User login</a>
+                  <a class="dropdown-item" href="/admin_login">Admin login</a>
+                </div>
+              </li>
+            </div>
+
+              <li class="nav-item">
+                  <a class="nav-link" href="/signup">Sign up</a>
+              </li>
+
+          </ul>
+
+      </div>
+   
+  </nav> 
 
     {% block main %}{% endblock %}
 

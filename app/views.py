@@ -39,7 +39,9 @@ class LoginForm(FlaskForm):
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80, message = "Password should be a minimum of 8 characters")])
     remember = BooleanField('remember me')
 
-
+class AdminLoginForm(FlaskForm):
+    username = StringField('username', validators=[InputRequired(), Length(min=4, max=15, message = "Username should be between 4 and 15 characters long")])
+    password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80, message = "Password should be a minimum of 8 characters")])
 
 class RegisterForm(FlaskForm):
     email = StringField('email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
@@ -57,7 +59,7 @@ class AssessmentForm(FlaskForm):
 
 @app.route("/")
 def base():
-    return render_template("base.html")
+    return render_template("home.html")
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -85,6 +87,15 @@ def login():
         #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
 
     return render_template("login.html", form=form)
+
+
+@app.route("/admin_login", methods=['GET', 'POST'])
+def admin_login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        return "<h1>" + form.username.data + "<h1>" + form.password.data
+
+    return render_template("admin_login.html", form=form)    
 
 @app.route("/signup", methods=['GET', 'POST'])
 def signup():
