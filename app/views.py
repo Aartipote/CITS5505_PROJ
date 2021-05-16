@@ -22,6 +22,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(80))
     answers = db.Column(db.String(100))
+    marks = db.Column(db.Integer)
 
     # create a function to return username string
     def __repr__(self):
@@ -68,12 +69,17 @@ class RegisterForm(FlaskForm):
 
 
 class AssessmentForm(FlaskForm):
-    ques1 = 'Vaccination can lead to an increase in mutation.'
-    ques2 = 'Common cold is the same as Covid-19.'
-    ques4 = 'Which symptom do we see most likely when we are infected by COVID-19?'
-    ques3 = 'Common cold is the same as Covid-19.'
+    ques1 = StringField('Covid is a caused by:')
+    ques2 = StringField('Who are most likely to get affected?')
+    ques3 = StringField('Common cold and covid-19 are the same.')
+    ques4 = StringField('The virus is spread primarily through')
+    ques5 = StringField('Where was covids first case detected?')
+    ques6 = StringField('Which of the below options are most likely to be a symptom of Covid?')
+    ques7 = StringField('Which of the following should we do to prevent transmission?')
+    ques8 = StringField('When we are exposed to a covid patient, we are likely to show symptoms by')
+    ques9 = StringField('If you show symptoms for Covid, you should')
+    ques10 = StringField('Can vaccination lead to an increase in mutation of the virus?')
 
-    questions = [ques1,ques2,ques3,ques4]
 
 @app.route("/")
 def base():
@@ -144,7 +150,7 @@ def signup():
         useremailcheck = User.query.filter_by(email = form.email.data).first()
         if not usernamecheck and not useremailcheck:
             hashed_password = generate_password_hash(form.password.data, method='sha256')
-            new_user = User(username=form.username.data, email=form.email.data, password=hashed_password, answers = "")
+            new_user = User(username=form.username.data, email=form.email.data, password=hashed_password, answers = "",marks= None)
             db.session.add(new_user)
             db.session.commit()
 
@@ -241,31 +247,28 @@ def whattodo():
 def assessment():
 
     form = AssessmentForm()
-    ques1 = 'Vaccination can lead to an increase in mutation.'
-    ques2 = 'Covid-19 is a'
-    ques3 = 'Common cold is the same as Covid-19.'
-    ques4 = 'Which symptom do we see most likely when we are infected by COVID-19?'
-    
-    questions = [ques1,ques2,ques3,ques4]
-
-    
-
-    actual_answers = ['No','Virus','False','Sore throat']
+      
+    actual_answers = ['3','3','2','2','2','1','3','2','3','2']
     if request.method == 'POST':
-        user_answers = [request.form.get('question1'),request.form.get('question2'),request.form.get('question3'),request.form.get('question4')]
+        # user_answers = [request.form.get('question1'),request.form.get('question2'),request.form.get('question3'),request.form.get('question4')]
+        user_answers = [form.ques1.data,form.ques2.data,form.ques3.data,form.ques4.data,form.ques5.data,form.ques6.data,form.ques7.data,form.ques8.data,form.ques9.data,form.ques10.data]
+        tot = 0
         sep = "/"
-
-            
+        print(len(actual_answers))
+        for i in range(len(actual_answers)):
+            if(user_answers[i] == actual_answers[i]):
+                tot += 1;
 
         user_answer_concat = sep.join(user_answers)
 
         user_row = User.query.get(current_user.id)
         user_row.answers=user_answer_concat
+        user_row.marks = tot
         db.session.add(user_row)
         db.session.commit()
 
         return redirect(url_for('submission'))
-    return render_template("assessment.html" , name=current_user.username,questions=questions)
+    return render_template("assessment.html" , form = form, name=current_user.username)
 
 
 
@@ -273,33 +276,45 @@ def assessment():
 @login_required
 def submission():
     form = AssessmentForm()
+    ques1 = 'Covid is caused by:'
+    ques2 = 'Who are most likely to get affected?'
+    ques3 = 'Common cold and covid-19 are the same.'
+    ques4 = 'The virus is spread primarily through'
+    ques5 = 'Where was covids first case detected?'
+    ques6 = 'Which of the below options are most likely to be a symptom of Covid?'
+    ques7 = 'Which of the following should we do to prevent transmission?'
+    ques8 = 'When we are exposed to a covid patient, we are likely to show symptoms by'
+    ques9 = 'If you show symptoms for Covid, you should'
+    ques10 = 'Can vaccination lead to an increase in mutation of the virus?'
 
-    ques1 = 'Vaccination can lead to an increase in mutation.'
-    ques2 = 'Covid-19 is a'
-    ques3 = 'Common cold is the same as Covid-19.'
-    ques4 = 'Which symptom do we see most likely when we are infected by COVID-19?'
-    
-
-    questions = [ques1,ques2,ques3,ques4]
+    questions=[ques1,ques2,ques3,ques4,ques5,ques6,ques7,ques8,ques9,ques10]
 
     user_row_subm = User.query.get(current_user.id)
     ans_string = user_row_subm.answers
+    tot_marks = user_row_subm.marks
+    print(tot_marks)
     ans = ans_string.split('/')
     if len(ans) == 1 and ans[0]=='':
         flash("You need to do the assessment before you can check the Submissions!!!")
         return redirect(url_for('assessment'))
     else:
-        actual_answers = ['No','Virus','False','Sore throat']
-        tot_value = 0
+        actual_answers = ['3','3','2','2','2','1','3','2','3','2']
+        # print("_______")
+        # print(len(actual_answers))
+        # print("___")
         answer_correctness=[]
         for x in range(len(actual_answers)):
+            # print("xvalues")
+            # print (x)
             if(ans[x]==actual_answers[x]):
-                tot_value +=1
+                
                 answer_correctness.append('Correct')
             else:
                 answer_correctness.append('In-correct')
         
-        return render_template("submission.html",form = form, name=current_user.username,ans=answer_correctness, total = tot_value, questions=questions)
+        return render_template("submission.html",form = form, name=current_user.username,ans=answer_correctness, total = tot_marks, questions=questions)
+        
+    
 
         
 
@@ -307,6 +322,36 @@ def submission():
 @app.route('/progress')
 @login_required
 def progress():
-    return render_template("progressreport.html", name=current_user.username)
+    user_name = []
+    user_answer = []
+    user_marks=[]
+    user_all = User.query.all()
+    user_length = len(user_all)
+    
+    for i in range(len(user_all)):
+        user_name.append(user_all[i].username) 
+        
+        # user_answer.append(user_all[i].answers)
+        user_marks.append(user_all[i].marks)
+        user_average = sum(user_marks)/len(user_marks)
+        
+
+    # total_list = []
+    # for j in range(len(user_answer)):
+    #     if(user_answer[j] != ''):
+    #         a= user_answer[j]
+    #         a=a.split('/')
+            
+    #         actual_answers = ['3','3','2','2']
+    #         user_total = 0
+    #         for k in range(len(a)):
+                
+    #             if(a[k] == actual_answers[k]):
+    #                 user_total += 1
+    #         total_list.append(user_total)
+        
+
+
+    return render_template("progressreport.html", name=current_user.username, user_name=user_name, user_answer=user_marks, user_length=user_length,user_avg = user_average)
 
 

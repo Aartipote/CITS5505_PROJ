@@ -21,38 +21,160 @@
     
     <div class="container">
         <form class="form-assessment" method="POST" action="/assessment">
+            {{ form.hidden_tag() }} 
             <div class="ques-block">
                 <h2>Question 1:</h2>
-                <p>{{ questions[0] }}</p>
-                <input type = "radio" name="question1" value = "Yes">  Yes <br>
-                <input type = "radio" name="question1"value = "No">  No<br>
+                <p>{{  wtf.form_field(form.ques1) }}</p>
+                <!-- <input type = "radio" name="question1" value = "Yes">  Yes <br>
+                <input type = "radio" name="question1"value = "No">  No<br> -->
+                <p>Answer options:
+                    
+                    <ol>
+                        <li>Bacteria</li>
+                        <li>Fungus</li>
+                        <li>Virus</li>
+                    </ol>
+                    
+                </p>
             </div>
             <div class="ques-block">
                 <h2>Question 2:</h2>
-                <p>{{ questions[1] }} </p>
-                <input type = "radio" name="question2" value = "Fungus">  Fungus <br>
+                <p>{{  wtf.form_field(form.ques2) }}</p>
+                <!-- <input type = "radio" name="question2" value = "Fungus">  Fungus <br>
                 <input type = "radio" name="question2"value = "Virus">  Virus<br>
-                <input type = "radio" name="question2"value = "Bacteria">  Bacteria<br>
+                <input type = "radio" name="question2"value = "Bacteria">  Bacteria<br> -->
+                <p>Answer options:
+                    <ol>
+                        <li>Children</li>
+                        <li>Adults who are healthy</li>
+                        <li>People with medical problems</li>
+                    </ol>
+                </p>
             </div>
             <div class="ques-block">
                 <h2>Question 3:</h2>
-                <p>{{ questions[2] }}</p>
-                <input type = "radio" name="question3" value = "True">  True<br>
-                <input type = "radio" name="question3"value = "False">  False<br>
+                <p>{{  wtf.form_field(form.ques3) }}</p>
+                <!-- <input type = "radio" name="question3" value = "True">  True<br>
+                <input type = "radio" name="question3"value = "False">  False<br> -->
+                <p>Answer options:
+                    <ol>
+                        <li>True</li>
+                        <li>False</li>
+                        
+                    </ol>
+                </p>
             </div>
             <div class="ques-block">
                 <h2>Question 4:</h2>
-                <p>{{ questions[3] }}</p>
-                <input type = "radio" name="question4" value = "Sore throat">  Sore throat<br>
+                <p>{{  wtf.form_field(form.ques4) }}</p>
+                <!-- <input type = "radio" name="question4" value = "Sore throat">  Sore throat<br>
                 <input type = "radio" name="question4"value = "Neck pain">  Neck pain<br>
-                <input type = "radio" name="question4"value = "Joint ache">  Joint ache<br>
+                <input type = "radio" name="question4"value = "Joint ache">  Joint ache<br> -->
+                <p>Answer options:
+                    <ol>
+                        <li>Running water</li>
+                        <li>Saliva or discharge from nose</li>
+                        
+                    </ol>
+                </p>
             </div>
-            <input type="submit">
+            <div class="ques-block">
+                <h2>Question 5:</h2>
+                <p>{{  wtf.form_field(form.ques5) }}</p>
+                <!-- <input type = "radio" name="question1" value = "Yes">  Yes <br>
+                <input type = "radio" name="question1"value = "No">  No<br> -->
+                <p>Answer options:
+                    
+                    <ol>
+                        <li>Sichuan</li>
+                        <li>Wuhan</li>
+                        <li>Yunnan</li>
+                    </ol>
+                    
+                </p>
+            </div>
+            <div class="ques-block">
+                <h2>Question 6:</h2>
+                <p>{{  wtf.form_field(form.ques6) }}</p>
+                <!-- <input type = "radio" name="question1" value = "Yes">  Yes <br>
+                <input type = "radio" name="question1"value = "No">  No<br> -->
+                <p>Answer options:
+                    
+                    <ol>
+                        <li>Sore throat</li>
+                        <li>Neck pain</li>
+                        <li>Joint pain</li>
+                    </ol>
+                    
+                </p>
+            </div>
+            <div class="ques-block">
+                <h2>Question 7:</h2>
+                <p>{{  wtf.form_field(form.ques7) }}</p>
+                <!-- <input type = "radio" name="question1" value = "Yes">  Yes <br>
+                <input type = "radio" name="question1"value = "No">  No<br> -->
+                <p>Answer options:
+                    
+                    <ol>
+                        <li>Eating junk food</li>
+                        <li>No need for regular sanitization</li>
+                        <li>Wear masks while going out</li>
+                    </ol>
+                    
+                </p>
+            </div>
+            <div class="ques-block">
+                <h2>Question 8:</h2>
+                <p>{{  wtf.form_field(form.ques8) }}</p>
+                <!-- <input type = "radio" name="question1" value = "Yes">  Yes <br>
+                <input type = "radio" name="question1"value = "No">  No<br> -->
+                <p>Answer options:
+                    
+                    <ol>
+                        <li>Day 1</li>
+                        <li>Day 5-6</li>
+                        <li>Day 20</li>
+                    </ol>
+                    
+                </p>
+            </div>
+            <div class="ques-block">
+                <h2>Question 9:</h2>
+                <p>{{  wtf.form_field(form.ques9) }}</p>
+                <!-- <input type = "radio" name="question1" value = "Yes">  Yes <br>
+                <input type = "radio" name="question1"value = "No">  No<br> -->
+                <p>Answer options:
+                    
+                    <ol>
+                        <li>Wait till it gets better</li>
+                        <li>Exercise daily</li>
+                        <li>Quarantine and call appropriate authorities for further action</li>
+                    </ol>
+                    
+                </p>
+            </div>
+            <div class="ques-block">
+                <h2>Question 10:</h2>
+                <p>{{  wtf.form_field(form.ques10) }}</p>
+                <!-- <input type = "radio" name="question1" value = "Yes">  Yes <br>
+                <input type = "radio" name="question1"value = "No">  No<br> -->
+                <p>Answer options:
+                    
+                    <ol>
+                        <li>Yes</li>
+                        <li>No</li>
+                    </ol>
+                    
+                </p>
+            </div>
+            <button type="submit">Submit</button>
 
         </form>
     </div>
 
     
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{{url_for('static',filename='js/app.js')}}"></script>
 
 {% endblock %}
