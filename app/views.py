@@ -62,12 +62,11 @@ class RegisterForm(FlaskForm):
 
 
 class AssessmentForm(FlaskForm):
-    ques1 = 'Vaccination can lead to an increase in mutation.'
-    ques2 = 'Common cold is the same as Covid-19.'
-    ques4 = 'Which symptom do we see most likely when we are infected by COVID-19?'
-    ques3 = 'Common cold is the same as Covid-19.'
+    ques1 = StringField('Covid is a:')
+    ques2 = StringField('Who are most likely to get affected?')
+    ques3 = StringField('Common cold and covid-19 are the same.')
+    ques4 = StringField('The virus is spread primarily through')
 
-    questions = [ques1,ques2,ques3,ques4]
 
 @app.route("/")
 def base():
@@ -217,18 +216,15 @@ def whattodo():
 def assessment():
 
     form = AssessmentForm()
-    ques1 = 'Vaccination can lead to an increase in mutation.'
-    ques2 = 'Covid-19 is a'
-    ques3 = 'Common cold is the same as Covid-19.'
-    ques4 = 'Which symptom do we see most likely when we are infected by COVID-19?'
     
-    questions = [ques1,ques2,ques3,ques4]
 
     
 
-    actual_answers = ['No','Virus','False','Sore throat']
+    actual_answers = ['3','3','2','2']
     if request.method == 'POST':
-        user_answers = [request.form.get('question1'),request.form.get('question2'),request.form.get('question3'),request.form.get('question4')]
+        # user_answers = [request.form.get('question1'),request.form.get('question2'),request.form.get('question3'),request.form.get('question4')]
+        user_answers = [form.ques1.data,form.ques2.data,form.ques3.data,form.ques4.data]
+        print(user_answers)
         sep = "/"
 
             
@@ -241,7 +237,7 @@ def assessment():
         db.session.commit()
 
         return redirect(url_for('submission'))
-    return render_template("assessment.html" , name=current_user.username,questions=questions)
+    return render_template("assessment.html" , form = form, name=current_user.username)
 
 
 
@@ -249,33 +245,30 @@ def assessment():
 @login_required
 def submission():
     form = AssessmentForm()
+    ques1 = 'Covid is a:'
+    ques2 = 'Who are most likely to get affected?'
+    ques3 = 'Common cold and covid-19 are the same.'
+    ques4 = 'The virus is spread primarily through'
 
-    ques1 = 'Vaccination can lead to an increase in mutation.'
-    ques2 = 'Covid-19 is a'
-    ques3 = 'Common cold is the same as Covid-19.'
-    ques4 = 'Which symptom do we see most likely when we are infected by COVID-19?'
-    
-
-    questions = [ques1,ques2,ques3,ques4]
+    questions=[ques1,ques2,ques3,ques4]
 
     user_row_subm = User.query.get(current_user.id)
     ans_string = user_row_subm.answers
     ans = ans_string.split('/')
-    if len(ans) == 1 and ans[0]=='':
-        flash("You need to do the assessment before you can check the Submissions!!!")
-        return redirect(url_for('assessment'))
-    else:
-        actual_answers = ['No','Virus','False','Sore throat']
-        tot_value = 0
-        answer_correctness=[]
-        for x in range(len(actual_answers)):
-            if(ans[x]==actual_answers[x]):
-                tot_value +=1
-                answer_correctness.append('Correct')
-            else:
-                answer_correctness.append('In-correct')
+    
+    actual_answers = ['3','3','2','2']
+    tot_value = 0
+    answer_correctness=[]
+    for x in range(0,4):
+        if(ans[x] == actual_answers[x]):
+            tot_value +=1
+            answer_correctness=answer_correctness+["Correct"]
+            print(answer_correctness)
+        else:
+            answer_correctness=answer_correctness+["Incorrect"]
+            print(answer_correctness)
         
-        return render_template("submission.html",form = form, name=current_user.username,ans=answer_correctness, total = tot_value, questions=questions)
+    return render_template("submission.html",form = form, name=current_user.username,ans=answer_correctness, total = tot_value,questions=questions)
 
         
 
