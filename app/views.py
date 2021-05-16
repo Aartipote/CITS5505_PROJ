@@ -15,6 +15,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+# creating user db model
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), unique=True)
@@ -22,6 +23,11 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(80))
     answers = db.Column(db.String(100))
 
+    # create a function to return username string
+    def __repr__(self):
+        return '<Name %r>' % self.id
+
+# creating user db model
 class Admin(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), unique=True)
@@ -110,22 +116,12 @@ def admin_login():
         if admin:
             if admin.password == form.password.data:
                 login_user(admin, remember=form.remember.data)
-                # return redirect(url_for('admin_dashboard'))
-                return render_template("admin_dashboard.html")
+                # return render_template("admin_dashboard.html")
+                return redirect(url_for('admin_dashboard'))
             else:
                 flash('Invalid password')
                 return redirect(url_for('admin_login'))
-        # else:
-        #     admin1 = Admin(username="aarti", password="aarti123")
-        #     admin2 = Admin(username="reshma", password="reshma123")
-             
-        #     db.session.add(admin1)
-        #     db.session.commit()
-
-        #     db.session.add(admin2)
-        #     db.session.commit()
-        #     return redirect(url_for('admin_login')) 
-
+        
         else:
             flash("Admin account doesnt exist")
             return redirect(url_for("admin_login"))
@@ -174,10 +170,38 @@ def signup():
 def dashboard():
     return render_template('dashboard.html', name=current_user.username)
 
-@app.route("/admin_dashboard")
+@app.route("/admin_dashboard", methods=['POST', 'GET'])
 @login_required
-def admin_dashboard():
-    return render_template('admin_dashboard.html', name=current_user.username)
+# def admin_dashboard():
+#     username_all=[]
+#     user = User.query.all()
+#     for x in range(len(user)):
+
+#         username_all.append(user[x].username)
+
+#    ,username_all=username_all
+def end_user():
+    if request.method == "POST":
+        user_name = request.form.get('name')
+        email_id = request.form.get('email')
+        hashed_password = generate_password_hash(request.form.get('password'), method='sha256')
+
+        new_user = User(username=user_name, email=email_id, password=hashed_password, answers = "")
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect('/admin_dashboard')
+        except:
+            flash('There was an error adding the user')
+            return redirect(url_for('/admin_dashboard'))
+
+    else:
+        username_all=[]
+        user = User.query.all()
+        for x in range(len(user)):
+            username_all.append(user[x].username)
+        return render_template('admin_dashboard.html', username_all=username_all)
+
 
 @app.route('/logout')
 @login_required

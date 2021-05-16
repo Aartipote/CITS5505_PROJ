@@ -1,25 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <h1>Hello</h1>
-  
-            <ul class="navbar-nav mb-3 mb-lg-0 ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Log out</a>
-                </li>
-            </ul>
-        </div>
-     
-    </nav> 
-    
-</body>
-</html>
+{% extends "admin_dashboard_base.html" %}
+
+{% block title %}Admin Page{% endblock %}
+
+{% block main %}
+<div class ="conatiner">
+    <br>
+<h3> Add new user</h3>
+<br>
+<form action="/admin_dashboard" METHOD="POST">
+<input type="text" placeholder="Name" name="name">
+<input type="text" placeholder="email" name="email">
+<input type="text" placeholder="password" name="password">
+
+<input type="submit" value="Add Name" class="btn btn-secondary">
+</form>
+<br>
+
+{% for user in username_all %}
+    <h4>
+        {{ user }}
+    </h4>
+{% endfor %}
+
+</div>
+
+{% endblock %}
