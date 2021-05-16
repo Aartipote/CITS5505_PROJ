@@ -29,4 +29,3 @@ $(document).ready(function(){
         elements[i].setAttribute("required","true");
     }
 })
-
