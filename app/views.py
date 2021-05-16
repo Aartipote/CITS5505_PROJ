@@ -183,7 +183,13 @@ def admin_dashboard():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('base'))
+    return render_template('home.html')
+
+@app.route('/admin_logout')
+@login_required
+def admin_logout():
+    logout_user()
+    return render_template('home.html')
 
 @app.route('/aboutcovid')
 @login_required
