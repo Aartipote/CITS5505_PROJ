@@ -209,6 +209,7 @@ def whattodo():
 @app.route('/assessment',methods=['GET','POST'])
 @login_required
 def assessment():
+
     form = AssessmentForm()
     ques1 = 'Vaccination can lead to an increase in mutation.'
     ques2 = 'Covid-19 is a'
@@ -217,10 +218,15 @@ def assessment():
     
     questions = [ques1,ques2,ques3,ques4]
 
+    
+
     actual_answers = ['No','Virus','False','Sore throat']
     if request.method == 'POST':
         user_answers = [request.form.get('question1'),request.form.get('question2'),request.form.get('question3'),request.form.get('question4')]
         sep = "/"
+
+            
+
         user_answer_concat = sep.join(user_answers)
 
         user_row = User.query.get(current_user.id)
@@ -232,7 +238,8 @@ def assessment():
     return render_template("assessment.html" , name=current_user.username,questions=questions)
 
 
-@app.route('/submission',methods=['GET'])
+
+@app.route('/submission',methods=['GET','POST'])
 @login_required
 def submission():
     form = AssessmentForm()
@@ -248,17 +255,24 @@ def submission():
     user_row_subm = User.query.get(current_user.id)
     ans_string = user_row_subm.answers
     ans = ans_string.split('/')
-    actual_answers = ['No','Virus','False','Sore throat']
-    tot_value = 0
-    answer_correctness=[]
-    for x in range(len(actual_answers)):
-        if(ans[x]==actual_answers[x]):
-            tot_value +=1
-            answer_correctness.append('Correct')
-        else:
-            answer_correctness.append('In-correct')
-    
-    return render_template("submission.html",form = form, name=current_user.username,ans=answer_correctness, total = tot_value, questions=questions)
+    if len(ans) == 1 and ans[0]=='':
+        flash("You need to do the assessment before you can check the Submissions!!!")
+        return redirect(url_for('assessment'))
+    else:
+        actual_answers = ['No','Virus','False','Sore throat']
+        tot_value = 0
+        answer_correctness=[]
+        for x in range(len(actual_answers)):
+            if(ans[x]==actual_answers[x]):
+                tot_value +=1
+                answer_correctness.append('Correct')
+            else:
+                answer_correctness.append('In-correct')
+        
+        return render_template("submission.html",form = form, name=current_user.username,ans=answer_correctness, total = tot_value, questions=questions)
+
+        
+
 
 @app.route('/progress')
 @login_required
