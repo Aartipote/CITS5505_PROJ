@@ -1,3 +1,7 @@
+* {
+    font-family:cursive;
+  }
+
 body {
     background-color: rgba(80, 24, 80, 0.067);
 }
@@ -5,11 +9,15 @@ body {
 .box {
     width: 300px;
     height: 200px;
-    top: 50%;
-    left: 50%;
-    margin-left: -150px;
-    margin-top: -100px;
+    margin-top: 100px;
+    left: 50%;    
 }
+
+/* .box_border{
+    border: 2px solid black;
+    border-style: groove;
+} */
+
 
 
   
