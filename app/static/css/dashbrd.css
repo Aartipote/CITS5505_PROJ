@@ -5,7 +5,7 @@
   body {
     background-color:rgba(0,0,0,0.1);
   }
-  
+
   a.nav-link {
     font-family: cursive;
     color:white;
@@ -76,4 +76,29 @@ iframe{
     opacity: 0;
   }
 } */
+
+
+
+/*user file sliding*/
+
+.container{
+  width: 20%;
+  margin:10px 10px;
+}
+.carosuel{
+  border:2px solid #ccc;
+  height:400px;
   
+}
+.slider{
+  height:100%;
+  display:flex;
+  width:400%;
+  border:1px solid red;
+}
+.slider section{
+  flex-basis:100%;
+  display:flex;
+  justify-content:center;
+  align-items: center;
+}

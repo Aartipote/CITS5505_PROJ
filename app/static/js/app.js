@@ -28,13 +28,13 @@ $(document).ready(function(){
     for(i=1;i<5;i++){
         elements[i].setAttribute("required","true");
     }
-})
-
-$(document).ready(function() {
-    var f = document.getElementById('Foo');
-    setInterval(function() {
-        // f.style.display = (f.style.display == 'none' ? '' : 'none');
-        $("#Foo").fadeIn(3000);
-    }, 1000);
-
 });
+
+// $(document).ready(function() {
+//     var f = document.getElementById('Foo');
+//     setInterval(function() {
+//         f.style.display = (f.style.display == 'none' ? '' : 'none');
+//     //     $("#Foo").fadeIn(3000);
+//     // }, 1000);
+
+// });
