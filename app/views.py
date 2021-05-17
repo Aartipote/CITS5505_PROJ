@@ -94,7 +94,7 @@ def login():
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
-                return redirect(url_for('dashboard'))
+                return redirect(url_for('userfile'))
             else:
                 flash('Invalid password')
                 return redirect(url_for('login'))
@@ -177,22 +177,15 @@ def dashboard():
     return render_template('dashboard.html', name=current_user.username)
 
 @app.route("/admin_dashboard", methods=['POST', 'GET'])
-@login_required
-# def admin_dashboard():
-#     username_all=[]
-#     user = User.query.all()
-#     for x in range(len(user)):
 
-#         username_all.append(user[x].username)
 
-#    ,username_all=username_all
-def end_user():
+def admin_dashboard():
     if request.method == "POST":
         user_name = request.form.get('name')
         email_id = request.form.get('email')
         hashed_password = generate_password_hash(request.form.get('password'), method='sha256')
 
-        new_user = User(username=user_name, email=email_id, password=hashed_password, answers = "")
+        new_user = User(username=user_name, email=email_id, password=hashed_password, answers = "",marks = None)
         try:
             db.session.add(new_user)
             db.session.commit()
@@ -220,6 +213,12 @@ def logout():
 def admin_logout():
     logout_user()
     return render_template('home.html')
+
+
+@app.route('/userfile')
+@login_required
+def userfile():
+    return render_template("userfile.html",name=current_user.username)
 
 @app.route('/aboutcovid')
 @login_required
