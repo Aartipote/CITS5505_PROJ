@@ -1,18 +1,104 @@
 * {
     font-family:cursive;
   }
+
+  body {
+    background-color:rgba(0,0,0,0.1);
+  }
+
   a.nav-link {
     font-family: cursive;
     color:white;
   }
 
-  body{
-    background-color:rgba(80, 24, 80, 0.067);
+  .background-image-container{
+    /* background-color:rgba(0,0,0,0.1); */
+    /* background-image: liner-gradient(rgba(243, 231, 231, 0.7),rgba(243, 231, 231, 0.7))url("https://media.istockphoto.com/photos/coronavirus-covid19-under-the-microscope-on-light-background-picture-id1217531023?k=6&m=1217531023&s=170667a&w=0&h=PFUwy9WB_93dmaHppEzYnmrDOSFokyzKMqp7kxhDSfI="); */
+    background-repeat: no-repeat;
+    background-size: cover;
+    height:100vh;
   }
 
   .user-page-container h1{
     font-weight: bold;
     color: rgb(33, 59, 204);
     text-align: center;
-    margin-top:20px;
+    margin-top:80px;
   }
+
+  /* creating the in built buttons to link pages*/
+  .nextprev{
+    text-align: right;
+  }
+  .nextprev a{
+    border:2px solid white;
+    padding:10px;
+    background-color: rgb(33, 59, 204);
+    color:white;
+  }
+
+  /*Safe_practices page */
+iframe{
+  margin-left: 350px;
+}
+/*assessment page*/
+
+/* .notice-center-box{
+  align-items: center;
+} */
+.imp-message{
+  /* border:5px solid rgb(105, 38, 38);  */
+  color:rgb(105, 38, 38); 
+  /* padding:10px; */
+  margin-top: 20px;
+  /* width: 400px; */
+  text-align: center;
+  align-items: center;
+  font-weight: bolder;
+  font-size: 20px
+}
+.ques-block{
+  padding-left: 15%;
+  padding-right: 15%;
+}
+
+/*progress page*/
+.progress-container p{
+  margin-top:20px;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  /* -webkit-animation: flash linear 3s infinite;
+	animation: flash linear 3s infinite; */
+}
+/* @keyframes flash {
+  50% {
+    opacity: 0;
+  }
+} */
+
+
+
+/*user file sliding*/
+
+.container{
+  width: 20%;
+  margin:10px 10px;
+}
+.carosuel{
+  border:2px solid #ccc;
+  height:400px;
+  
+}
+.slider{
+  height:100%;
+  display:flex;
+  width:400%;
+  border:1px solid red;
+}
+.slider section{
+  flex-basis:100%;
+  display:flex;
+  justify-content:center;
+  align-items: center;
+}
