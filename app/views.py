@@ -192,28 +192,15 @@ def signup():
 def dashboard():
     return render_template('dashboard.html', name=current_user.username)
 
-<<<<<<< HEAD
-@app.route("/admin_dashboard", methods = ['GET', 'POST'])
-def admin_dashboard():
-    username_all = []
-    print("entered admin dashboard view method")
-    # added this line here instead of inside the else statement
-=======
 @app.route("/admin_dashboard", methods=['POST', 'GET'])
-
-
 def admin_dashboard():
->>>>>>> eb862080345e03620f593b1646154db0713296e5
+    username_all=[]
     if request.method == "POST":
         user_name = request.form.get('name')
         email_id = request.form.get('email')
         hashed_password = generate_password_hash(request.form.get('password'), method='sha256')
 
-<<<<<<< HEAD
         new_user = User(username=user_name, email=email_id, password=hashed_password)
-=======
-        new_user = User(username=user_name, email=email_id, password=hashed_password, answers = "",marks = None)
->>>>>>> eb862080345e03620f593b1646154db0713296e5
         try:
             db.session.add(new_user)
             db.session.commit()
@@ -221,9 +208,7 @@ def admin_dashboard():
             return redirect(url_for('admin_dashboard'))
         except:
             flash('There was an error adding the user')
-            return redirect(url_for('admin_dashboard'))
-
-    
+            return redirect(url_for('admin_dashboard')) 
     else:
         # commented this out here and added above
         # username_all=[]
