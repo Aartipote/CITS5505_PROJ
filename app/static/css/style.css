@@ -1,9 +1,14 @@
 * {
     font-family:cursive;
+    
   }
-
-body {
-    background-color: rgba(80, 24, 80, 0.067);
+/* background images for the loginand sign up pages*/
+body{
+    /* background-color: rgba(80, 24, 80, 0.067); */
+    background-image: url("https://i2.wp.com/silentvoice.ca/wp-content/uploads/2020/03/COVID-19-background.png?fit=1000%2C426&ssl=1");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height:100vh;
 }
 
 .box {
@@ -12,10 +17,34 @@ body {
     margin-top: 100px;
     left: 50%;    
 }
+/* The login and sign up pages change in font colour*/
+.form-signin-heading{
+    color:white;
+}
+.home-start{
+    color:white;
+}
+.home-start h1{
+    font-size:50px;
+}
+.home-para p{
+    width:800px;
+    align-items: left;
+    margin-top: 50px;
+    
+    font-size: 20px;
+    padding: 20px;
+}
+ 
 
 /* .box_border{
     border: 2px solid black;
     border-style: groove;
+} */
+
+
+/* .bg-image-op::before{
+    opacity: 0.2;
 } */
 
 
