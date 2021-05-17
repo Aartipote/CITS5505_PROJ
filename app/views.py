@@ -327,31 +327,39 @@ def progress():
     user_marks=[]
     user_all = User.query.all()
     user_length = len(user_all)
-    
-    for i in range(len(user_all)):
-        user_name.append(user_all[i].username) 
-        
-        # user_answer.append(user_all[i].answers)
-        user_marks.append(user_all[i].marks)
-        user_average = sum(user_marks)/len(user_marks)
-        
-
-    # total_list = []
-    # for j in range(len(user_answer)):
-    #     if(user_answer[j] != ''):
-    #         a= user_answer[j]
-    #         a=a.split('/')
+    try:
+        for i in range(len(user_all)):
+            user_name.append(user_all[i].username) 
             
-    #         actual_answers = ['3','3','2','2']
-    #         user_total = 0
-    #         for k in range(len(a)):
-                
-    #             if(a[k] == actual_answers[k]):
-    #                 user_total += 1
-    #         total_list.append(user_total)
+            # user_answer.append(user_all[i].answers)
+            user_marks.append(user_all[i].marks)
+            if None in user_marks:
+                none_count = user_marks.count(None)
+                len1 = len(user_marks) - none_count
+                new_list = []
+                for i in range(len(user_marks)):
+                    if user_marks[i] != None:
+                        new_list.append(user_marks[i])
+                        
+                user_average = sum(new_list)/len1
+            else:
+                user_average = sum(user_marks)/len(user_marks)
+                unique_marks = set(user_marks)
+                unique_marks = list(unique_marks)
+
+                count = []
+                for r in range(len(unique_marks)):
+                    ct = unique_marks.count(unique_marks[r])
+                    count = count.append(ct)
+            return render_template("progressreport.html", name=current_user.username, user_name=user_name, user_length=user_length,user_avg = user_average, unique_marks=unique_marks,count=count)
+    except ZeroDivisionError:
+        flash("Re-directed to Assessment page!! Please contine with assessment to see progress...")
+        return redirect(url_for("assessment"))
+
         
-
-
-    return render_template("progressreport.html", name=current_user.username, user_name=user_name, user_answer=user_marks, user_length=user_length,user_avg = user_average)
+    
+    
+    # return render_template("progressreport.html", name=current_user.username)
+    #return render_template("progressreport.html", name=current_user.username, user_name=user_name, user_length=user_length,user_avg = user_average)
 
 
