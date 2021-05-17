@@ -15,6 +15,9 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+# adding this line to overwrite the default login view from the above line
+login_manager.login_view = "admin_login"
+
 # creating user db model
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -24,6 +27,14 @@ class User(UserMixin, db.Model):
     answers = db.Column(db.String(100))
     marks = db.Column(db.Integer)
 
+
+    def __init__(self, username, password, email):
+        self.username = username
+        self.email = email
+        self.password = password
+        self.answers = ""
+        self.marks = None
+    
     # create a function to return username string
     def __repr__(self):
         return '<Name %r>' % self.id
@@ -32,13 +43,16 @@ class User(UserMixin, db.Model):
 class Admin(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), unique=True)
+    email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(80))
 
-    # def __init__(self, username, email, password):
-    #     self.id = id
-    #     self.username = username
-    #     self.email = email
-    #     self.password = password
+    # added in effort to make the admin login work
+    is_active = db.Column(db.Boolean(), default=True)
+
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.password = password
 
 # admin1 = Admin(username="aarti", password="aarti123")
 # admin2 = Admin(username="reshma", password="reshma123")
@@ -59,14 +73,14 @@ class LoginForm(FlaskForm):
     remember = BooleanField('remember me')
 
 class AdminLoginForm(FlaskForm):
-    username = StringField('username', validators=[InputRequired(), Length(min=4, max=15, message = "Username should be between 4 and 15 characters long")])
-    password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80, message = "Password should be a minimum of 8 characters")])
+    username = StringField('admin username', validators=[InputRequired(), Length(min=4, max=15, message = "Username should be between 4 and 15 characters long")])
+    password = PasswordField('admin password', validators=[InputRequired(), Length(min=8, max=80, message = "Password should be a minimum of 8 characters")])
+    remember = BooleanField("remember me")
 
 class RegisterForm(FlaskForm):
     email = StringField('email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
     username = StringField('username', validators=[InputRequired(), Length(min=4, max=15, message = "Username should be between 4 and 15 characters long")])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80, message = "Password should be a minimum of 8 characters")])
-
 
 class AssessmentForm(FlaskForm):
     ques1 = StringField('Covid is a caused by:')
@@ -115,13 +129,15 @@ def login():
 
 @app.route("/admin_login", methods=['GET', 'POST'])
 def admin_login():
-    form = LoginForm()
+    form = AdminLoginForm()
 
     if form.validate_on_submit():
         admin = Admin.query.filter_by(username=form.username.data).first()
         if admin:
             if admin.password == form.password.data:
-                login_user(admin, remember=form.remember.data)
+                # the force attribute is added in an effort to make the admin login work
+                login_user(admin, remember=form.remember.data, force = True)
+                print("reached")
                 # return render_template("admin_dashboard.html")
                 return redirect(url_for('admin_dashboard'))
             else:
@@ -132,13 +148,13 @@ def admin_login():
             flash("Admin account doesnt exist")
             return redirect(url_for("admin_login"))
     else:
+        print("coming into the errors section")
         if(len(list(form.errors.values())) >0):
             flash(list(form.errors.values())[0][0])
             return redirect(url_for('admin_login'))
 
         
-        # return "<h1>" + form.username.data + "<h1>" + form.password.data
-
+    # return "<h1>" + form.username.data + "<h1>" + form.password.data
     return render_template("admin_login.html", form=form)    
 
 @app.route("/signup", methods=['GET', 'POST'])
@@ -176,38 +192,36 @@ def signup():
 def dashboard():
     return render_template('dashboard.html', name=current_user.username)
 
-@app.route("/admin_dashboard", methods=['POST', 'GET'])
-@login_required
-# def admin_dashboard():
-#     username_all=[]
-#     user = User.query.all()
-#     for x in range(len(user)):
-
-#         username_all.append(user[x].username)
-
-#    ,username_all=username_all
-def end_user():
+@app.route("/admin_dashboard", methods = ['GET', 'POST'])
+def admin_dashboard():
+    username_all = []
+    print("entered admin dashboard view method")
+    # added this line here instead of inside the else statement
     if request.method == "POST":
         user_name = request.form.get('name')
         email_id = request.form.get('email')
         hashed_password = generate_password_hash(request.form.get('password'), method='sha256')
 
-        new_user = User(username=user_name, email=email_id, password=hashed_password, answers = "")
+        new_user = User(username=user_name, email=email_id, password=hashed_password)
         try:
             db.session.add(new_user)
             db.session.commit()
-            return redirect('/admin_dashboard')
+            flash('Newly added user ')
+            return redirect(url_for('admin_dashboard'))
         except:
             flash('There was an error adding the user')
-            return redirect(url_for('/admin_dashboard'))
+            return redirect(url_for('admin_dashboard'))
 
+    
     else:
-        username_all=[]
+        # commented this out here and added above
+        # username_all=[]
         user = User.query.all()
         for x in range(len(user)):
             username_all.append(user[x].username)
         return render_template('admin_dashboard.html', username_all=username_all)
-
+    
+    return render_template('admin_dashboard.html', username_all=username_all )
 
 @app.route('/logout')
 @login_required
@@ -257,7 +271,7 @@ def assessment():
         print(len(actual_answers))
         for i in range(len(actual_answers)):
             if(user_answers[i] == actual_answers[i]):
-                tot += 1;
+                tot += 1
 
         user_answer_concat = sep.join(user_answers)
 

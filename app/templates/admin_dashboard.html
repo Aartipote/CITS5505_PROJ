@@ -3,6 +3,7 @@
 {% block title %}Admin Page{% endblock %}
 
 {% block main %}
+
 <div class ="conatiner">
     <br>
 <h3> Add new user</h3>
@@ -16,6 +17,8 @@
 </form>
 <br>
 
+<h4> Newly added user list:</h4>
+<br>
 {% for user in username_all %}
     <h4>
         {{ user }}
