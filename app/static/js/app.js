@@ -1,25 +1,3 @@
-console.log("Hello from app.js");
-
-//alert("Something went wrong");
-
-
-// javascript for required validation on assessment page
-
-// function validate(){
-//     var valid = false;
-
-//     var x = document.getElementById.question1;
-//     for (var i=0; i<x.length;i++){
-//         if(x[i].checked){
-//             valid = true;
-//             break;
-//         }
-//     }
-//     if (value == true){
-//         alert("Please Select an answer.")
-//         return redirect(url_for("assessment"))
-//     }
-// }
 
 
 $(document).ready(function(){
@@ -30,11 +8,36 @@ $(document).ready(function(){
     }
 });
 
-// $(document).ready(function() {
-//     var f = document.getElementById('Foo');
-//     setInterval(function() {
-//         f.style.display = (f.style.display == 'none' ? '' : 'none');
-//     //     $("#Foo").fadeIn(3000);
-//     // }, 1000);
 
-// });
+var awards = document.getElementById("trophy");
+console.log(awards)
+var btnn1=document.getElementById("btnn");
+
+btnn1.addEventListener("click",function(){
+    
+    var requestvalue = new XMLHttpRequest();
+    requestvalue.open('GET','https://coronavirus-tracker-api.herokuapp.com/v2/locations')
+    requestvalue.onload = function(){
+        var ourdata = JSON.parse(requestvalue.responseText);
+        
+        justcallHTML(ourdata);
+    };
+    requestvalue.send();
+});
+function justcallHTML(data){
+    var varname="";
+    var country_name="";
+    var latest_confirmed = "";
+    locations=data.locations;
+
+    for(i=0; i<locations.length; i++){
+        country_name=locations[i].country;
+        latest_confirmed = locations[i].latest;
+     
+        varname+= "<li> In " +"<b>" +country_name +"</b>" +" there were around "+ latest_confirmed.confirmed+" confirmed cases.</li>";
+
+    
+   }
+
+   awards.insertAdjacentHTML('beforeend',varname);
+};

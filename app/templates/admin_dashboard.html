@@ -3,10 +3,27 @@
 {% block title %}Admin Page{% endblock %}
 
 {% block main %}
-<div class ="conatiner">
+
+<link
+rel="stylesheet"
+href="{{url_for('static',filename='css/dashbrd.css')}}"
+/>
+
+<div class ="container">
     <br>
-<h3> Add new user</h3>
+{% for mess in get_flashed_messages() %}
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{mess}}
+      </div>
+             
+    {% endfor %}
+
 <br>
+
+<h3> Add new user</h3>
 <form action="/admin_dashboard" METHOD="POST">
 <input type="text" placeholder="Name" name="name">
 <input type="text" placeholder="email" name="email">
@@ -16,12 +33,21 @@
 </form>
 <br>
 
-{% for user in username_all %}
-    <h4>
-        {{ user }}
-    </h4>
-{% endfor %}
+<table style="width:100%">
+<tr>   
+    <th>Username</th>
+    <th>Email</th>
+</tr>
+<tr>
+{% for i in range(n) %}
+    
+       <td>{{ username_all[i] }}</td>
+    
+        <td>{{ email[i] }}</td>
+</tr> 
 
+{% endfor %}
+</table>
 </div>
 
 {% endblock %}
