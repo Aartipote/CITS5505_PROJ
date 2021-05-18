@@ -4,14 +4,43 @@
 {% block title %}Learning Tutorials Page{% endblock %}
 
 {% block main %}
-<div class="container">
-    <div class="carosuel">
-        <div class="slider">
-            <section>Welcome!!! </section>
-            <section>2!!! </section>
-            <section>3!!! </section>
+<div class="user-page-container container">
+    <div class="container">
+        <div class="user-page-common">
+            <h1>Hurray!!!</h1>
+            <hr>
+            <div class="flex-container">
+                
+                <div class="user-welcome-message">
+ 
+                    <p> We shall now begin our journey into understanding about covid-19 and also learning few practices that can help prevent this.</p>
+                    <p>The button below will display Covid-19 confirmed deaths stats in different countries. </p>
+                    <p>But to begin learning click on the image to the right...</p>
+                    
+                </div>
+                <div class="image-container-user">
+                    <a href = "aboutcovid">
+                        <img src = "https://img.freepik.com/free-photo/man-sitting-question-mark-coronavirus_96743-642.jpg?size=626&ext=jpg" width = 200px>
+                    </a>
+                </div>
+                
+            </div>
+            <header>
+                <button id="btnn" class="block"> Loading Covid Stats for the confirmed cases:</button>
+            </header>
+            <div id="trophy" class="center"></div>
+            
+
+        
         </div>
+        
+        
     </div>
+    
 </div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{{url_for('static',filename='js/app.js')}}"></script>
 
 {% endblock %}

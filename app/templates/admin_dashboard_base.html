@@ -13,38 +13,21 @@
       crossorigin="anonymous"
     />
 
-    <!-- Custom CSS -->
-    <link
-      rel="stylesheet"
-      href="{{url_for('static',filename='css/style.css')}}"
-    />
-
 
 </head>
 <body>
-   
+   <div class="container">
     <div class="navbar navbar-dark bg-dark">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Log out</a>
+                    <button class="btn-secondary lg-button"><a class="nav-link" href="/">Admin Log out</a></button>
                 </li>
             </ul>
  
     </div>  
 
-    <!-- <div class = "container">
-        <h3>Users</h3>
-        {% for x in username_all %}
-            {{ x }}<br>
-        {% endfor %}
-        
-   
-
-
-
-    </div>    -->
 
     {% block main %}{% endblock %}
-
+</div>
 </body>
 </html>

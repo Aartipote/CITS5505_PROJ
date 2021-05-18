@@ -2,9 +2,7 @@
     font-family:cursive;
   }
 
-  body {
-    background-color:rgba(0,0,0,0.1);
-  }
+ 
 
   a.nav-link {
     font-family: cursive;
@@ -12,8 +10,7 @@
   }
 
   .background-image-container{
-    /* background-color:rgba(0,0,0,0.1); */
-    /* background-image: liner-gradient(rgba(243, 231, 231, 0.7),rgba(243, 231, 231, 0.7))url("https://media.istockphoto.com/photos/coronavirus-covid19-under-the-microscope-on-light-background-picture-id1217531023?k=6&m=1217531023&s=170667a&w=0&h=PFUwy9WB_93dmaHppEzYnmrDOSFokyzKMqp7kxhDSfI="); */
+    
     background-repeat: no-repeat;
     background-size: cover;
     height:100vh;
@@ -23,7 +20,8 @@
     font-weight: bold;
     color: rgb(33, 59, 204);
     text-align: center;
-    margin-top:80px;
+    margin-top:50px;
+    text-shadow: 4px 4px 4px grey;
   }
 
   /* creating the in built buttons to link pages*/
@@ -43,9 +41,7 @@ iframe{
 }
 /*assessment page*/
 
-/* .notice-center-box{
-  align-items: center;
-} */
+
 .imp-message{
   /* border:5px solid rgb(105, 38, 38);  */
   color:rgb(105, 38, 38); 
@@ -64,41 +60,49 @@ iframe{
 
 /*progress page*/
 .progress-container p{
-  margin-top:20px;
+  margin-top:30px;
   font-size: 30px;
   font-weight: bold;
   text-align: center;
-  /* -webkit-animation: flash linear 3s infinite;
-	animation: flash linear 3s infinite; */
-}
-/* @keyframes flash {
-  50% {
-    opacity: 0;
-  }
-} */
 
+}
+*/
 
 
 /*user file sliding*/
 
-.container{
-  width: 20%;
-  margin:10px 10px;
+.image-container-user{
+  text-align:right;
+  justify-content: center;
 }
-.carosuel{
-  border:2px solid #ccc;
-  height:400px;
-  
+.user-welcome-message{
+  width:600px;
+  flex:1;
 }
-.slider{
-  height:100%;
-  display:flex;
-  width:400%;
-  border:1px solid red;
+.user-welcome-message h3{
+  font-size:35px;
+  text-align:center;
 }
-.slider section{
-  flex-basis:100%;
-  display:flex;
-  justify-content:center;
-  align-items: center;
+.user-welcome-message p{
+  font-size:25px;
+  }
+
+  /* button in user file*/
+
+  .block{
+    width:400px;
+    padding:1%;
+    border:1px solid white;
+    background-color: rgb(33, 59, 204);
+    color:white;
+  }
+
+.lg-button{
+  border-radius: 8px;
+  margin-left: 5px;
+  padding: 5px;
 }
+.flex-container{
+  display: flex;
+}
+
